@@ -47,15 +47,22 @@
       min-height: 690px;
     }
 
-    .fdl-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 15px;
-      letter-spacing: -.5px;
-      text-transform: lowercase;
-    }
+.fdl-brand {
+  display: flex;
+  align-items: center;
+  width: 230px;
+  max-width: 100%;
+}
+
+.fdl-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  object-position: left center;
+  filter: brightness(0) invert(1);
+}
 
     .fdl-brand-dot {
       width: 12px;
@@ -407,11 +414,22 @@
         background: #fff;
       }
       .fdl-shell { display: block; min-height: auto; }
-      .fdl-aside {
-        min-height: auto;
-        background: #242424 !important;
-        padding: 24px 34px;
-      }
+.fdl-aside {
+  min-height: auto;
+  background: #ffffff !important;
+  color: #242424 !important;
+  padding: 22px 34px;
+  border-bottom: 2px solid #242424;
+}
+
+.fdl-aside .fdl-logo {
+  filter: none !important;
+  max-height: 40px;
+}
+
+.fdl-aside h1 {
+  color: #242424 !important;
+}
       .fdl-aside h1 { font-size: 31px; }
       .fdl-aside p,
       .fdl-trust,
@@ -425,12 +443,13 @@
     }
   </style>
 
-  <div class="fdl-shell">
-    <aside class="fdl-aside">
-      <div class="fdl-brand">
-        <span class="fdl-brand-dot"></span>
-        farmácia da liga
-      </div>
+<div class="fdl-brand">
+  <img 
+    src="COLE_AQUI_O_URL_DO_SEU_LOGO.jpg"
+    alt="Farmácia da Liga"
+    class="fdl-logo"
+  >
+</div>
 
       <div>
         <h1>O seu cabelo conta uma história.</h1>
