@@ -1,0 +1,1024 @@
+<div id="fdl-hair-quiz">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+    #fdl-hair-quiz {
+      --ink: #242424;
+      --paper: #f7f5f0;
+      --white: #ffffff;
+      --muted: #76716b;
+      --line: #dedad2;
+      --accent: #2f473c;
+      --danger: #9e3c32;
+      --soft-green: #edf2ee;
+      font-family: "Montserrat", Arial, sans-serif;
+      color: var(--ink);
+      max-width: 1120px;
+      margin: 30px auto;
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    #fdl-hair-quiz * { box-sizing: border-box; }
+
+    #fdl-hair-quiz button,
+    #fdl-hair-quiz a {
+      font-family: inherit;
+    }
+
+    .fdl-shell {
+      min-height: 690px;
+      display: grid;
+      grid-template-columns: 40% 60%;
+      background: var(--paper);
+    }
+
+    .fdl-aside {
+      position: relative;
+      padding: 45px;
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(18,18,18,.10), rgba(18,18,18,.78)),
+        url("https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1100&q=85")
+        center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 690px;
+    }
+
+    .fdl-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -.5px;
+      text-transform: lowercase;
+    }
+
+    .fdl-brand-dot {
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--white);
+      border-radius: 50%;
+    }
+
+    .fdl-aside h1 {
+      max-width: 350px;
+      margin: 0;
+      font-size: clamp(34px, 4vw, 58px);
+      letter-spacing: -3px;
+      line-height: .96;
+      font-weight: 700;
+    }
+
+    .fdl-aside p {
+      max-width: 330px;
+      margin: 20px 0 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,.9);
+    }
+
+    .fdl-trust {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      font-weight: 700;
+    }
+
+    .fdl-content {
+      padding: 45px clamp(28px, 5vw, 72px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .fdl-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .fdl-step-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .fdl-progress {
+      width: 135px;
+      height: 2px;
+      background: var(--line);
+      position: relative;
+    }
+
+    .fdl-progress-fill {
+      height: 100%;
+      width: 0;
+      background: var(--ink);
+      transition: width .35s ease;
+    }
+
+    .fdl-screen {
+      display: none;
+      animation: fdlFade .35s ease;
+    }
+
+    .fdl-screen.active { display: block; }
+
+    @keyframes fdlFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fdl-question-number {
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+
+    .fdl-question h2,
+    .fdl-result-title {
+      font-size: clamp(25px, 3vw, 38px);
+      line-height: 1.12;
+      letter-spacing: -1.8px;
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    .fdl-question p,
+    .fdl-result-intro {
+      margin: 0 0 25px;
+      max-width: 560px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .fdl-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .fdl-options.single { grid-template-columns: 1fr; }
+
+    .fdl-option {
+      width: 100%;
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.45);
+      text-align: left;
+      padding: 15px 16px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .fdl-option:hover,
+    .fdl-option.selected {
+      color: var(--white);
+      border-color: var(--ink);
+      background: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .fdl-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .fdl-btn {
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--white);
+      padding: 14px 20px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 1.1px;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+
+    .fdl-btn:hover { background: transparent; color: var(--ink); }
+
+    .fdl-btn.secondary {
+      color: var(--ink);
+      background: transparent;
+      border-color: transparent;
+      padding-left: 0;
+    }
+
+    .fdl-btn.secondary:hover {
+      color: var(--accent);
+      background: transparent;
+    }
+
+    .fdl-btn:disabled {
+      cursor: not-allowed;
+      opacity: .35;
+    }
+
+    .fdl-disclaimer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .fdl-result-badge {
+      display: inline-flex;
+      background: var(--soft-green);
+      color: var(--accent);
+      padding: 8px 11px;
+      margin-bottom: 16px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .fdl-routine {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 28px 0;
+    }
+
+    .fdl-routine-card {
+      border-top: 2px solid var(--ink);
+      padding: 13px 0;
+    }
+
+    .fdl-routine-step {
+      color: var(--accent);
+      display: block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .fdl-routine-card h4 {
+      margin: 0 0 7px;
+      font-size: 13px;
+    }
+
+    .fdl-routine-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .fdl-products-heading {
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+      margin: 10px 0 16px;
+      font-size: 17px;
+      letter-spacing: -0.7px;
+    }
+
+    .fdl-products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .fdl-product {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 178px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      padding: 15px;
+    }
+
+    .fdl-product-tag {
+      display: inline-block;
+      color: var(--accent);
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .fdl-product h4 {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .fdl-product p {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 8px 0 15px;
+    }
+
+    .fdl-product a {
+      align-self: flex-start;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      padding-bottom: 3px;
+    }
+
+    .fdl-alert {
+      border-left: 3px solid var(--danger);
+      background: #fbf2f0;
+      padding: 14px 15px;
+      margin-top: 22px;
+      color: #642c26;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .fdl-result-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .fdl-result-actions .fdl-btn {
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .fdl-restart {
+      border-color: var(--line) !important;
+      color: var(--ink) !important;
+      background: transparent !important;
+    }
+
+    @media (max-width: 820px) {
+      .fdl-shell { grid-template-columns: 1fr; }
+      .fdl-aside { min-height: 300px; padding: 30px; }
+      .fdl-aside h1 { max-width: 460px; }
+      .fdl-content { min-height: 600px; padding: 32px 24px; }
+    }
+
+    @media (max-width: 560px) {
+      .fdl-options,
+      .fdl-routine,
+      .fdl-products { grid-template-columns: 1fr; }
+      .fdl-aside h1 { font-size: 38px; }
+      .fdl-topbar { margin-bottom: 24px; }
+      .fdl-progress { width: 90px; }
+    }
+
+    @media print {
+      body * { visibility: hidden !important; }
+      #fdl-hair-quiz,
+      #fdl-hair-quiz * { visibility: visible !important; }
+      #fdl-hair-quiz {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        margin: 0;
+        background: #fff;
+      }
+      .fdl-shell { display: block; min-height: auto; }
+      .fdl-aside {
+        min-height: auto;
+        background: #242424 !important;
+        padding: 24px 34px;
+      }
+      .fdl-aside h1 { font-size: 31px; }
+      .fdl-aside p,
+      .fdl-trust,
+      .fdl-topbar,
+      .fdl-result-actions { display: none !important; }
+      .fdl-content { padding: 28px 34px; }
+      .fdl-screen:not(#resultScreen) { display: none !important; }
+      #resultScreen { display: block !important; }
+      .fdl-product { min-height: 130px; }
+      .fdl-disclaimer { font-size: 9px; }
+    }
+  </style>
+
+  <div class="fdl-shell">
+    <aside class="fdl-aside">
+      <div class="fdl-brand">
+        <span class="fdl-brand-dot"></span>
+        farmácia da liga
+      </div>
+
+      <div>
+        <h1>O seu cabelo conta uma história.</h1>
+        <p>Descubra uma rotina capilar personalizada, pensada pela equipa da Farmácia da Liga para as necessidades do seu couro cabeludo e cabelo.</p>
+      </div>
+
+      <div class="fdl-trust">
+        <span>03 minutos</span>
+        <span>Rotina personalizada</span>
+        <span>Plano imprimível</span>
+      </div>
+    </aside>
+
+    <main class="fdl-content">
+      <div class="fdl-topbar">
+        <span class="fdl-step-label" id="stepLabel">Avaliação capilar</span>
+        <div class="fdl-progress"><div class="fdl-progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <section class="fdl-screen active" id="welcomeScreen">
+        <div class="fdl-question">
+          <div class="fdl-question-number">Farmácia da Liga · Hair Atelier</div>
+          <h2>Vamos encontrar a rotina certa para si.</h2>
+          <p>Responda a algumas perguntas sobre o seu couro cabeludo, cabelo, hábitos e preocupações. No final, recebe um plano de cuidados e uma seleção de produtos escolhidos pela nossa equipa.</p>
+          <button class="fdl-btn" id="startQuiz">Começar a avaliação</button>
+          <div class="fdl-disclaimer">
+            Este questionário presta aconselhamento cosmético e farmacêutico geral. Não constitui diagnóstico médico, nem substitui a avaliação por dermatologista ou tricologista.
+          </div>
+        </div>
+      </section>
+
+      <section class="fdl-screen" id="questionScreen">
+        <div class="fdl-question">
+          <div class="fdl-question-number" id="questionNumber"></div>
+          <h2 id="questionTitle"></h2>
+          <p id="questionHelp"></p>
+          <div class="fdl-options" id="questionOptions"></div>
+        </div>
+
+        <div class="fdl-nav">
+          <button class="fdl-btn secondary" id="previousBtn">← Anterior</button>
+          <button class="fdl-btn" id="nextBtn" disabled>Continuar →</button>
+        </div>
+      </section>
+
+      <section class="fdl-screen" id="resultScreen">
+        <div id="resultContent"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const quiz = document.getElementById("fdl-hair-quiz");
+
+      /*
+        ================================================================
+        CATÁLOGO EDITÁVEL
+        Altere nome, descrição e link dos produtos para os URLs reais
+        da Farmácia da Liga. Pode adicionar/remover produtos por perfil.
+        ================================================================
+      */
+      const CATALOGO = {
+        queda: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Trikare C+ Champô Queda 200 ml",
+            texto: "Limpeza adaptada a cabelos frágeis e com tendência para queda.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Fortalecer",
+            nome: "Isdin Lambdapil Fortificante Cápsulas x60",
+            texto: "Suplemento para complementar uma rotina de fortalecimento capilar.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Intensivo",
+            nome: "Ampolas ou loção antiqueda",
+            texto: "Selecione no vosso catálogo o cuidado leave-in recomendado pela equipa.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        oleosidade: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Champô seborregulador",
+            texto: "Escolha pela equipa um champô para couro cabeludo oleoso.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Equilibrar",
+            nome: "Esfoliante ou sérum de couro cabeludo",
+            texto: "Cuidado complementar para sensação de frescura e equilíbrio.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Pontas",
+            nome: "Leave-in leve",
+            texto: "Hidratação apenas do meio às pontas, sem pesar na raiz.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        caspa: [
+          {
+            tag: "Passo 1 · Tratamento",
+            nome: "Trikare DS Champô 200 ml",
+            texto: "Champô de tratamento para couro cabeludo com tendência a descamação.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Alternar",
+            nome: "Champô suave de manutenção",
+            texto: "Para alternar e preservar o conforto do couro cabeludo.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Conforto",
+            nome: "Loção calmante capilar",
+            texto: "Selecionar um cuidado sem enxaguamento adequado à sensibilidade.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        sensivel: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Champô de elevada tolerância",
+            texto: "Fórmula suave para ajudar a preservar o conforto do couro cabeludo.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Acalmar",
+            nome: "Sérum ou loção calmante",
+            texto: "Cuidado leave-in para períodos de desconforto e reatividade.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Proteger",
+            nome: "Máscara suave para comprimentos",
+            texto: "Aplicar apenas nos comprimentos e pontas, evitando a raiz.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        reparacao: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Champô reparador",
+            texto: "Limpeza nutritiva para cabelo fragilizado por coloração ou calor.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Tratar",
+            nome: "Máscara reparadora",
+            texto: "Aplicar uma a duas vezes por semana, respeitando o tempo de atuação.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Proteger",
+            nome: "Protetor térmico ou leave-in",
+            texto: "Essencial antes de secador, prancha ou modelador.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        hidratacao: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Champô hidratante suave",
+            texto: "Limpa sem retirar conforto aos comprimentos mais secos.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Nutrir",
+            nome: "Máscara hidratante",
+            texto: "Tratamento semanal para suavidade, flexibilidade e brilho.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Finalizar",
+            nome: "Óleo ou sérum de pontas",
+            texto: "Aplicar uma pequena quantidade no comprimento e nas pontas.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        volume: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Champô densificador",
+            texto: "Cuidado de lavagem leve para cabelo fino e sem corpo.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Cuidar",
+            nome: "Sérum densificador",
+            texto: "Cuidado de couro cabeludo para incorporar na rotina regular.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Modelar",
+            nome: "Spray de volume",
+            texto: "Aplicar na raiz antes de secar para uma sensação de maior corpo.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ],
+        caracois: [
+          {
+            tag: "Passo 1 · Lavar",
+            nome: "Champô suave para caracóis",
+            texto: "Limpeza que respeita a definição e a hidratação natural do fio.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 2 · Nutrir",
+            nome: "Máscara nutritiva",
+            texto: "Tratamento semanal para elasticidade e redução de frizz.",
+            link: "https://www.farmaciadaliga.pt/"
+          },
+          {
+            tag: "Passo 3 · Definir",
+            nome: "Creme de pentear ou gel definidor",
+            texto: "Aplicar no cabelo húmido e modelar sem fricção excessiva.",
+            link: "https://www.farmaciadaliga.pt/"
+          }
+        ]
+      };
+
+      const PERFIS = {
+        queda: {
+          titulo: "Fortalecimento & densidade",
+          descricao: "As suas respostas indicam uma preocupação principal com queda ou enfraquecimento. A rotina deve privilegiar limpeza suave, reforço da fibra e consistência durante várias semanas.",
+          rotina: [
+            ["01 · Lavar", "Limpe com suavidade", "Evite fricção vigorosa e água demasiado quente."],
+            ["02 · Fortalecer", "Aplique o cuidado específico", "Use loção ou ampola de acordo com a frequência indicada."],
+            ["03 · Apoiar", "Mantenha a rotina", "A regularidade é fundamental para avaliar a evolução."]
+          ]
+        },
+        oleosidade: {
+          titulo: "Equilíbrio do couro cabeludo",
+          descricao: "O seu couro cabeludo apresenta tendência para oleosidade. O objetivo é regular o excesso de sebo sem desidratar os comprimentos.",
+          rotina: [
+            ["01 · Lavar", "Limpeza equilibrante", "Lave sempre que necessário, sem acumular oleosidade."],
+            ["02 · Reequilibrar", "Cuidado específico na raiz", "Aplique apenas no couro cabeludo, quando recomendado."],
+            ["03 · Hidratar", "Cuide das pontas", "Mantenha os produtos nutritivos afastados da raiz."]
+          ]
+        },
+        caspa: {
+          titulo: "Couro cabeludo com descamação",
+          descricao: "Há sinais de descamação e/ou desconforto. Uma rotina de tratamento alternada com cuidado suave pode ajudar a recuperar o equilíbrio do couro cabeludo.",
+          rotina: [
+            ["01 · Tratar", "Use o champô específico", "Respeite o tempo de contacto indicado no rótulo."],
+            ["02 · Alternar", "Introduza um champô suave", "Intercale para manter conforto e tolerância."],
+            ["03 · Acompanhar", "Observe a evolução", "Se persistir, peça aconselhamento farmacêutico ou médico."]
+          ]
+        },
+        sensivel: {
+          titulo: "Conforto para couro cabeludo sensível",
+          descricao: "O seu perfil sugere reatividade ou sensibilidade. A prioridade é simplificar a rotina, reduzir fatores irritantes e preservar a barreira cutânea.",
+          rotina: [
+            ["01 · Simplificar", "Use uma limpeza suave", "Prefira fórmulas de elevada tolerância."],
+            ["02 · Acalmar", "Aplique cuidado de conforto", "Evite produtos agressivos, esfoliantes físicos e água quente."],
+            ["03 · Proteger", "Reduza agressões", "Limite calor intenso e procedimentos químicos enquanto houver desconforto."]
+          ]
+        },
+        reparacao: {
+          titulo: "Reparação de cabelo sensibilizado",
+          descricao: "O seu cabelo apresenta sinais compatíveis com dano químico, térmico ou mecânico. A rotina deve reparar, nutrir e proteger a fibra sem a sobrecarregar.",
+          rotina: [
+            ["01 · Lavar", "Limpeza reparadora", "Lave com suavidade e desembarace sem puxar."],
+            ["02 · Tratar", "Máscara semanal", "Aplique do meio às pontas, uma a duas vezes por semana."],
+            ["03 · Proteger", "Proteção térmica", "Use sempre antes de ferramentas de calor."]
+          ]
+        },
+        hidratacao: {
+          titulo: "Hidratação & luminosidade",
+          descricao: "O seu cabelo pede mais suavidade, hidratação e brilho. A rotina deve focar-se na reposição de conforto dos comprimentos e na proteção das pontas.",
+          rotina: [
+            ["01 · Lavar", "Champô hidratante", "Evite lavar com água muito quente."],
+            ["02 · Nutrir", "Máscara semanal", "Deixe atuar conforme indicação do produto."],
+            ["03 · Finalizar", "Sérum nas pontas", "Aplique pouca quantidade no cabelo seco ou húmido."]
+          ]
+        },
+        volume: {
+          titulo: "Densidade & volume",
+          descricao: "O seu cabelo é fino ou apresenta pouca sensação de corpo. O foco passa por fórmulas leves, cuidados de couro cabeludo e técnicas de secagem que elevem a raiz.",
+          rotina: [
+            ["01 · Lavar", "Limpeza leve", "Evite fórmulas muito ricas na raiz."],
+            ["02 · Densificar", "Cuidado de couro cabeludo", "Aplique de forma regular conforme a recomendação."],
+            ["03 · Modelar", "Volume sem pesar", "Seque elevando a raiz e use finalizadores leves."]
+          ]
+        },
+        caracois: {
+          titulo: "Definição & nutrição de caracóis",
+          descricao: "O seu cabelo beneficia de hidratação regular, técnicas delicadas de desembaraçar e finalização que respeite o padrão natural do caracol.",
+          rotina: [
+            ["01 · Lavar", "Limpeza suave", "Concentre o champô no couro cabeludo."],
+            ["02 · Nutrir", "Máscara de tratamento", "Desembarace com o produto e sem fricção."],
+            ["03 · Definir", "Finalização em cabelo húmido", "Aplique o definidor por secções e seque sem manipular."]
+          ]
+        }
+      };
+
+      const QUESTIONS = [
+        {
+          id: "principal",
+          title: "Qual é a sua principal preocupação capilar?",
+          help: "Escolha aquilo que gostaria de melhorar primeiro.",
+          options: [
+            ["queda", "Queda ou enfraquecimento"],
+            ["caspa", "Caspa, descamação ou comichão"],
+            ["oleosidade", "Oleosidade excessiva"],
+            ["hidratacao", "Secura, frizz ou falta de brilho"],
+            ["reparacao", "Cabelo danificado por cor ou calor"],
+            ["volume", "Cabelo fino ou falta de volume"],
+            ["caracois", "Definição de caracóis"],
+            ["sensivel", "Couro cabeludo sensível ou reativo"]
+          ]
+        },
+        {
+          id: "couro",
+          title: "Como descreve o seu couro cabeludo?",
+          help: "Pense na sensação entre lavagens.",
+          options: [
+            ["equilibrado", "Equilibrado"],
+            ["oleosidade", "Oleoso"],
+            ["sensivel", "Seco, apertado ou sensível"],
+            ["caspa", "Com escamas brancas ou amareladas"],
+            ["caspa", "Com comichão frequente"]
+          ]
+        },
+        {
+          id: "lavagem",
+          title: "Com que frequência lava o cabelo?",
+          help: "Não existe uma frequência universal: o importante é adequá-la ao seu couro cabeludo.",
+          options: [
+            ["diario", "Todos os dias"],
+            ["alternado", "Dia sim, dia não"],
+            ["semanal", "2 a 3 vezes por semana"],
+            ["pouco", "Uma vez por semana ou menos"]
+          ]
+        },
+        {
+          id: "comprimento",
+          title: "Como estão os seus comprimentos e pontas?",
+          help: "Escolha a opção mais próxima da realidade atual.",
+          options: [
+            ["hidratacao", "Secos, ásperos ou sem brilho"],
+            ["reparacao", "Quebradiços ou com pontas espigadas"],
+            ["caracois", "Com frizz e pouca definição"],
+            ["saudavel", "Globalmente saudáveis"]
+          ]
+        },
+        {
+          id: "fio",
+          title: "Qual é a espessura natural do seu fio?",
+          help: "Esta resposta ajuda a evitar produtos demasiado pesados ou insuficientes.",
+          options: [
+            ["volume", "Fino"],
+            ["medio", "Médio"],
+            ["espesso", "Espesso"],
+            ["naosei", "Não sei identificar"]
+          ]
+        },
+        {
+          id: "forma",
+          title: "Qual é a forma natural do seu cabelo?",
+          help: "Considere o cabelo sem escova, prancha ou modelador.",
+          options: [
+            ["liso", "Liso"],
+            ["ondulado", "Ondulado"],
+            ["caracois", "Encaracolado"],
+            ["caracois", "Muito encaracolado ou crespo"]
+          ]
+        },
+        {
+          id: "agressoes",
+          title: "Fez algum destes procedimentos nos últimos 6 meses?",
+          help: "Selecione o fator que mais influencia o estado atual do cabelo.",
+          options: [
+            ["reparacao", "Coloração ou madeixas"],
+            ["reparacao", "Descoloração"],
+            ["reparacao", "Alisamento ou queratina"],
+            ["reparacao", "Uso frequente de secador, prancha ou modelador"],
+            ["nenhum", "Nenhuma destas situações"]
+          ]
+        },
+        {
+          id: "queda_intensidade",
+          title: "Como descreve a queda de cabelo?",
+          help: "Se a sua preocupação não for queda, escolha “não noto queda acima do habitual”.",
+          options: [
+            ["nao", "Não noto queda acima do habitual"],
+            ["queda", "Ligeira, ao lavar ou pentear"],
+            ["queda", "Moderada e persistente"],
+            ["alerta", "Intensa, em tufos ou com falhas localizadas"]
+          ]
+        },
+        {
+          id: "contexto",
+          title: "Houve alguma mudança recente?",
+          help: "Estas situações podem influenciar temporariamente o ciclo capilar.",
+          options: [
+            ["queda", "Pós-parto ou amamentação"],
+            ["queda", "Stress intenso, doença, cirurgia ou febre recente"],
+            ["queda", "Dieta restritiva ou perda de peso"],
+            ["queda", "Alteração hormonal, tiroide ou medicação"],
+            ["nenhum", "Nenhuma destas situações"]
+          ]
+        },
+        {
+          id: "sinais",
+          title: "Tem algum destes sinais de alerta?",
+          help: "Esta pergunta ajuda-nos a indicar quando é preferível procurar avaliação profissional.",
+          options: [
+            ["alerta", "Dor, feridas, crostas ou sangramento"],
+            ["alerta", "Vermelhidão intensa ou placas espessas"],
+            ["alerta", "Falhas circulares ou áreas sem cabelo"],
+            ["nao", "Nenhum destes sinais"]
+          ]
+        }
+      ];
+
+      let current = 0;
+      let answers = {};
+      let selected = null;
+
+      const welcomeScreen = quiz.querySelector("#welcomeScreen");
+      const questionScreen = quiz.querySelector("#questionScreen");
+      const resultScreen = quiz.querySelector("#resultScreen");
+      const questionNumber = quiz.querySelector("#questionNumber");
+      const questionTitle = quiz.querySelector("#questionTitle");
+      const questionHelp = quiz.querySelector("#questionHelp");
+      const questionOptions = quiz.querySelector("#questionOptions");
+      const nextBtn = quiz.querySelector("#nextBtn");
+      const previousBtn = quiz.querySelector("#previousBtn");
+      const progressFill = quiz.querySelector("#progressFill");
+      const stepLabel = quiz.querySelector("#stepLabel");
+
+      function show(screen) {
+        [welcomeScreen, questionScreen, resultScreen].forEach(s => s.classList.remove("active"));
+        screen.classList.add("active");
+      }
+
+      function renderQuestion() {
+        const q = QUESTIONS[current];
+        selected = answers[q.id] || null;
+        show(questionScreen);
+
+        questionNumber.textContent = `Pergunta ${current + 1} de ${QUESTIONS.length}`;
+        questionTitle.textContent = q.title;
+        questionHelp.textContent = q.help;
+        stepLabel.textContent = `Avaliação · ${Math.round(((current + 1) / QUESTIONS.length) * 100)}%`;
+        progressFill.style.width = `${((current + 1) / QUESTIONS.length) * 100}%`;
+
+        questionOptions.innerHTML = "";
+        q.options.forEach(([value, label]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `fdl-option ${selected === value ? "selected" : ""}`;
+          button.textContent = label;
+          button.addEventListener("click", () => {
+            selected = value;
+            answers[q.id] = value;
+            [...questionOptions.querySelectorAll(".fdl-option")].forEach(el => el.classList.remove("selected"));
+            button.classList.add("selected");
+            nextBtn.disabled = false;
+          });
+          questionOptions.appendChild(button);
+        });
+
+        nextBtn.disabled = !selected;
+        nextBtn.textContent = current === QUESTIONS.length - 1 ? "Ver o meu plano →" : "Continuar →";
+        previousBtn.style.visibility = current === 0 ? "hidden" : "visible";
+      }
+
+      function computeResult() {
+        const points = {
+          queda: 0, oleosidade: 0, caspa: 0, sensivel: 0,
+          reparacao: 0, hidratacao: 0, volume: 0, caracois: 0
+        };
+
+        Object.values(answers).forEach(value => {
+          if (points[value] !== undefined) points[value] += 1;
+        });
+
+        if (answers.principal && points[answers.principal] !== undefined) points[answers.principal] += 4;
+        if (answers.couro === "caspa") points.caspa += 2;
+        if (answers.couro === "sensivel") points.sensivel += 2;
+        if (answers.comprimento === "reparacao") points.reparacao += 2;
+        if (answers.comprimento === "hidratacao") points.hidratacao += 2;
+        if (answers.fio === "volume") points.volume += 2;
+        if (answers.forma === "caracois") points.caracois += 2;
+        if (answers.agressoes === "reparacao") points.reparacao += 2;
+
+        const profile = Object.keys(points).sort((a, b) => points[b] - points[a])[0];
+        const alert = answers.queda_intensidade === "alerta" || answers.sinais === "alerta";
+        return { profile, alert };
+      }
+
+      function renderResult() {
+        const { profile, alert } = computeResult();
+        const perfil = PERFIS[profile];
+        const produtos = CATALOGO[profile];
+
+        const routineHTML = perfil.rotina.map(item => `
+          <div class="fdl-routine-card">
+            <span class="fdl-routine-step">${item[0]}</span>
+            <h4>${item[1]}</h4>
+            <p>${item[2]}</p>
+          </div>
+        `).join("");
+
+        const productsHTML = produtos.map(product => `
+          <article class="fdl-product">
+            <div>
+              <span class="fdl-product-tag">${product.tag}</span>
+              <h4>${product.nome}</h4>
+              <p>${product.texto}</p>
+            </div>
+            <a href="${product.link}" target="_blank" rel="noopener">Ver produto →</a>
+          </article>
+        `).join("");
+
+        const alertHTML = alert ? `
+          <div class="fdl-alert">
+            <strong>Recomendamos avaliação profissional.</strong><br>
+            Pela presença de sinais de alerta, queda intensa, falhas localizadas, dor, feridas ou placas no couro cabeludo, procure aconselhamento junto da equipa farmacêutica e, se indicado, avaliação por dermatologista/tricologista.
+          </div>
+        ` : `
+          <div class="fdl-disclaimer">
+            Plano de cuidado personalizado com base nas respostas indicadas. Introduza produtos novos de forma gradual e siga sempre as instruções do fabricante.
+          </div>
+        `;
+
+        quiz.querySelector("#resultContent").innerHTML = `
+          <span class="fdl-result-badge">O seu perfil capilar</span>
+          <h2 class="fdl-result-title">${perfil.titulo}</h2>
+          <p class="fdl-result-intro">${perfil.descricao}</p>
+
+          <div class="fdl-routine">${routineHTML}</div>
+
+          <h3 class="fdl-products-heading">A sua rotina selecionada</h3>
+          <div class="fdl-products">${productsHTML}</div>
+
+          ${alertHTML}
+
+          <div class="fdl-result-actions">
+            <button class="fdl-btn" onclick="window.print()">Imprimir o meu plano</button>
+            <a class="fdl-btn restart" href="#" id="restartQuiz">Recomeçar avaliação</a>
+          </div>
+
+          <div class="fdl-disclaimer">
+            Farmácia da Liga · Aconselhamento digital capilar. Este resultado não constitui diagnóstico médico nem substitui consulta de dermatologia ou tricologia.
+          </div>
+        `;
+
+        quiz.querySelector("#restartQuiz").addEventListener("click", function (e) {
+          e.preventDefault();
+          current = 0;
+          answers = {};
+          selected = null;
+          progressFill.style.width = "0%";
+          stepLabel.textContent = "Avaliação capilar";
+          show(welcomeScreen);
+        });
+
+        progressFill.style.width = "100%";
+        stepLabel.textContent = "O seu plano capilar";
+        show(resultScreen);
+      }
+
+      quiz.querySelector("#startQuiz").addEventListener("click", renderQuestion);
+
+      nextBtn.addEventListener("click", () => {
+        if (!selected) return;
+        answers[QUESTIONS[current].id] = selected;
+        if (current < QUESTIONS.length - 1) {
+          current++;
+          renderQuestion();
+        } else {
+          renderResult();
+        }
+      });
+
+      previousBtn.addEventListener("click", () => {
+        if (current > 0) {
+          current--;
+          renderQuestion();
+        }
+      });
+    })();
+  </script>
+</div>
